@@ -3,7 +3,6 @@ const context = new (window.AudioContext || window.webkitAudioContext)();
 const bgm = document.createElement('audio');
 bgm.src = 'snd/slow-travel.mp3';
 bgm.loop = true;
-bgm.volume = 0.4;
 
 export const SfxClick = document.createElement('audio');
 SfxClick.src = 'snd/click.wav';
