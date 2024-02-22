@@ -17,6 +17,7 @@ function fitSizeWithRatio(width:number, height:number, baseWidth:number, baseHei
 
 PIXI.BaseTexture.defaultOptions.scaleMode = PIXI.SCALE_MODES.NEAREST;
 const app = new PIXI.Application();
+document.body.innerHTML = "";
 document.body.appendChild(app.view as any);
 
 function onResize() {
@@ -27,8 +28,12 @@ function onResize() {
 } onResize(); window.addEventListener('resize', onResize);
 
 (async () => {
+    let title = new PIXI.Text("Loading...", {fontFamily: 'minecraft', fontSize: 10, fill: 0xffffff});
+    title.anchor.set(0.5, 0.5); title.x = 120; title.y = 67;
+    app.stage.addChild(title);
     await Bundle.load();
-    const title = new PIXI.Text("The game is loaded.\nClick to start!", {fontFamily: 'minecraft', fontSize: 10, fill: 0xffffff});
+    app.stage.removeChild(title);
+    title = new PIXI.Text("The game is loaded.\nClick to start!", {fontFamily: 'minecraft', fontSize: 10, fill: 0xffffff});
     title.anchor.set(0.5, 0.5); title.x = 120; title.y = 67;
     app.stage.addChild(title);
     await new Promise<void>(r => app.view.addEventListener?.('click', () => { playBgm(); r();}, {once:true}));
