@@ -1,6 +1,7 @@
 import { Container, Graphics, ITextStyle, NineSlicePlane, ObservablePoint, Text } from "pixi.js";
 import { Category, Item, ItemId, ItemList, ItemStock, ItemTooltip, ItemViewList } from "./item.js";
 import { Bundle, Button } from "./resources.js";
+import { SfxClick, playSfx } from "./audio.js";
 
 type MinMax = number | [number, number];
 
@@ -241,7 +242,10 @@ export class OfferView extends Container {
             if (amount <= 0) return;
             this.views[id] = new ItemStock(id, Math.min(amount, max));
             this.views[id]!.eventMode = 'static';
-            this.views[id]!.on('click', () => this.add(id, -1, max));
+            this.views[id]!.on('click', () => {
+                playSfx(SfxClick);
+                this.add(id, -1, max);
+            });
             this.addChild(this.views[id]!);
             this.sortView();
         } else {

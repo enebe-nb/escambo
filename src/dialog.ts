@@ -1,6 +1,7 @@
 import { AnimatedSprite, Container, ITextStyle, Sprite, Spritesheet, Text } from "pixi.js";
 import { Bundle } from "./resources.js";
 import { Trader } from "./trader.js";
+import { SfxDialog, loopSfx } from "./audio.js";
 
 const fontStyle:Partial<ITextStyle> = {
     fontFamily: 'minecraft',
@@ -32,12 +33,13 @@ export class Dialog {
         this.node.addChild(character);
     }
 
-    async play(node: Container, reuse: boolean) {
+    async play(node: Container, reuse: boolean = false) {
         this.reuse = reuse;
         node.addChild(this.node);
 
         this.current = 0;
         while (this.current < this.text.length) {
+            const sfxStop = loopSfx(SfxDialog)
             this.character.play();
             this.isSkiping = false;
             this.textview = new Text("", fontStyle);
@@ -51,7 +53,7 @@ export class Dialog {
                     this.textview.text = text;
                     break;
                 }
-            }
+            } sfxStop();
             this.character.gotoAndStop(0);
             this.waitPromise = new Promise<void>(r => {this.waitResolver = r;});
             await this.waitPromise;

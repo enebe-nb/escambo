@@ -8,6 +8,7 @@ import { DemandView, Trader, TraderList } from "./trader.js";
 import { TransitionWarp } from "./transition.js";
 import { StarterDialog, TraderDialog } from "./dialog.js";
 import { Ship } from "./ship.js";
+import { SfxClick, SfxConsume, SfxDamage, SfxShip, SfxShipRobot, playSfx } from "./audio.js";
 
 export interface Scene {
     app: Application;
@@ -28,6 +29,7 @@ export class StarterScene implements Scene {
     constructor(app: Application) { this.app = app; }
 
     async play(): Promise<Scene|void> {
+        playSfx(SfxShip);
         await (new TransitionWarp(Trader.Race.Human, Ship.Type.Incoming)).play(this.node);
         const dialog = new StarterDialog();
         this.app.view.addEventListener?.('click', dialog.onclick.bind(dialog));
@@ -57,6 +59,7 @@ export class StarterScene implements Scene {
 
         Player.inventory.add(packs[choice].items);
         this.node.removeChildren();
+        playSfx(SfxShip);
         await (new TransitionWarp(Trader.Race.Human, Ship.Type.Outgoing)).play(this.node);
         return new DaysScene(this.app);
     }
@@ -99,9 +102,11 @@ export class DaysScene implements Scene {
             sprites[0][i].markIt();
             sprites[1][i].markIt();
             sprites[2][i].markIt();
-            if (!consume[0][i]) { ++Player.hunger[0]; hungerGauge.update(); } else if (Player.hunger[0] > 0) { --Player.hunger[0]; hungerGauge.update(); }
-            if (!consume[1][i]) { ++Player.thirst[0]; thirstGauge.update(); } else if (Player.thirst[0] > 0) { --Player.thirst[0]; thirstGauge.update(); }
-            if (!consume[2][i]) { ++Player.suffocate[0]; suffocateGauge.update(); } else if (Player.suffocate[0] > 0) { --Player.suffocate[0]; suffocateGauge.update(); }
+            let hasDmg = false;
+            if (!consume[0][i]) { hasDmg = true; ++Player.hunger[0]; hungerGauge.update(); } else if (Player.hunger[0] > 0) { --Player.hunger[0]; hungerGauge.update(); }
+            if (!consume[1][i]) { hasDmg = true; ++Player.thirst[0]; thirstGauge.update(); } else if (Player.thirst[0] > 0) { --Player.thirst[0]; thirstGauge.update(); }
+            if (!consume[2][i]) { hasDmg = true; ++Player.suffocate[0]; suffocateGauge.update(); } else if (Player.suffocate[0] > 0) { --Player.suffocate[0]; suffocateGauge.update(); }
+            playSfx(hasDmg ? SfxDamage : SfxConsume);
             await new Promise(r => setTimeout(r, 600));
             if (Player.hunger[0] >= Player.hunger[1]
                 || Player.thirst[0] >= Player.thirst[1]
@@ -157,6 +162,7 @@ export class TraderScene implements Scene {
         traderOffer.x = 122; traderOffer.y = 95;
         this.uiOffer.addChild(playerList, playerOffer, traderList, traderOffer, uiDemand, confirm, tooltip);
 
+        playSfx(race == Trader.Race.Robot ? SfxShipRobot : SfxShip);
         await (new TransitionWarp(race, Ship.Type.Incoming)).play(this.node);
         const dialog = new TraderDialog(race);
         this.app.view.addEventListener?.('click', dialog.onclick.bind(dialog));
@@ -165,6 +171,7 @@ export class TraderScene implements Scene {
             // Runaway
             dialog.text = TraderList[race].speaks.empty;
             await dialog.play(this.node);
+            playSfx(race == Trader.Race.Robot ? SfxShipRobot : SfxShip);
             await (new TransitionWarp(race, Ship.Type.Outgoing)).play(this.node);
 
             this.app.view.removeEventListener?.('click', dialog.onclick.bind(dialog));
@@ -184,10 +191,12 @@ export class TraderScene implements Scene {
         while(trader.tries) {
             this.node.addChild(this.uiOffer);
             playerList.onitemclick = (id: ItemId) => {
+                playSfx(SfxClick);
                 playerOffer.add(id, 1, Player.inventory.items[id]!.amount);
                 if (playerOffer.length > 0 && traderOffer.length > 0) confirm.visible = true;
             };
             traderList.onitemclick = (id: ItemId) => {
+                playSfx(SfxClick);
                 traderOffer.add(id, 1, trader.inventory.items[id]!.amount);
                 if (playerOffer.length > 0 && traderOffer.length > 0) confirm.visible = true;
             };
@@ -207,6 +216,7 @@ export class TraderScene implements Scene {
             }
         }
 
+        playSfx(race == Trader.Race.Robot ? SfxShipRobot : SfxShip);
         await (new TransitionWarp(race, Ship.Type.Outgoing)).play(this.node);
         this.app.view.removeEventListener?.('click', dialog.onclick.bind(dialog));
         return new DaysScene(this.app);
