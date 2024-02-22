@@ -1,0 +1,14 @@
+{
+  "name": "escambo",
+  "version": "0.0.1",
+  "description": "Barter game in space",
+  "scripts": {
+    "build": "node ./build.mjs"
+  },
+  "dependencies": {
+    "pixi.js": "^7.4.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.20.0"
+  }
+}

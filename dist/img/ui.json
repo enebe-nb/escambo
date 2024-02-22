@@ -1,0 +1,48 @@
+{
+  "frames": {
+    "frame0" : {
+      "frame": {"x":0, "y":0, "w":10, "h":10},
+      "borders": {"left":5, "top":5, "right":5, "bottom":5}
+    },
+    "frame0active" : {
+      "frame": {"x":0, "y":10, "w":10, "h":10},
+      "borders": {"left":5, "top":5, "right":5, "bottom":5}
+    },
+    "frame1" : {
+      "frame": {"x":10, "y":0, "w":8, "h":8},
+      "borders": {"left":3, "top":3, "right":3, "bottom":3}
+    },
+    "frame1active" : {
+      "frame": {"x":10, "y":8, "w":8, "h":8},
+      "borders": {"left":3, "top":3, "right":3, "bottom":3}
+    },
+    "credit" : {
+      "frame": {"x":18, "y":1, "w":4, "h":6}
+    },
+    "amount" : {
+      "frame": {"x":23, "y":1, "w":4, "h":6}
+    },
+    "greenbg" : {
+      "frame": {"x":28, "y":1, "w":3, "h":3}
+    },
+    "bluebg" : {
+      "frame": {"x":28, "y":5, "w":3, "h":3}
+    },
+    "redmark" : {
+      "frame": {"x":16, "y":16, "w":16, "h":16}
+    },
+    "emptygauge" : {
+      "frame": {"x":1, "y":21, "w":4, "h":6}
+    },
+    "greengauge" : {
+      "frame": {"x":6, "y":21, "w":4, "h":6}
+    },
+    "bluegauge" : {
+      "frame": {"x":11, "y":21, "w":4, "h":6}
+    }
+  },
+  "meta": {
+    "image": "ui.png",
+    "scale": "1"
+  }
+}
