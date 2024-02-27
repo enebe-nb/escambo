@@ -223,14 +223,14 @@ export class OfferView extends Container {
         return total;
     }
 
-    calcValueWithDemands(demands: [ItemId | Category, number][], isPlayer:boolean) {
+    calcValueWithDemands(demands: [ItemId | Category, number][]) {
         let total = 0;
         for (let id in this.views) {
             const _id = id as keyof typeof this.views;
             let demandRatio = 1;
             for (let demand of demands) {
                 if (_id == demand[0] || ItemList[_id].categories.includes(demand[0] as Category)) {
-                    demandRatio *= 1 + 0.1*demand[1]*(isPlayer?1:-1);
+                    demandRatio *= 1 + 0.1*demand[1];
                 }
             }
             total += ItemList[_id].baseValue*this.views[_id]!.amount*demandRatio;
@@ -285,19 +285,3 @@ export class OfferView extends Container {
         } return ret;
     }
 }
-
-        // const frame = new NineSlicePlane(Bundle.data?.ui.textures.frame0);
-        // frame.height = 76; frame.width = 78;
-        // this.node.addChild(frame);
-        // let offset = 4
-        // for (let id in this.items) {
-        //     const _id = id as keyof typeof this.items;
-        //     const view = new ItemViewList(this.items[_id]!);
-        //     view.x = 4; view.y = offset;
-        //     this.node.addChild(view);
-        //     offset += 18;
-        // }
-
-        // this.button = new Button("Select");
-        // this.button.x = 39; this.button.y = offset + 7;
-        // this.node.addChild(this.button);

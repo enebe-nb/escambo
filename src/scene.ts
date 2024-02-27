@@ -203,7 +203,7 @@ export class TraderScene implements Scene {
             await new Promise<void>(r => {confirm.on('click', () => {if (playerOffer.length > 0 && traderOffer.length > 0) r();});});
             this.node.removeChild(this.uiOffer);
 
-            const priceRatio = playerOffer.calcValueWithDemands(demands, true) / traderOffer.calcValueWithDemands(demands, false);
+            const priceRatio = playerOffer.calcValueWithDemands(demands) / traderOffer.calcValueWithDemands(demands);
             if (priceRatio > trader.greed) {
                 Player.inventory.remove(playerOffer.toAmounts());
                 Player.inventory.add(traderOffer.toItems());

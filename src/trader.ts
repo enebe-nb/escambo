@@ -106,7 +106,7 @@ export const TraderList: Record<Trader.Race, TraderData> = [
     {race: Trader.Race.Bug, mainDemand: 'blood', subDemand: 'organic', commoness:{}, speaks: {
         intro: ['Hello friend, let\'s trade! If you accept to travel with us, I can pay a good price to your family.'],
         fail: ['It seems we have nothing to talk about, I really thought you were my friend ...'],
-        success: ['That is what I\'m talking about! Thanks friend, I hope can we make more deals next time.'],
+        success: ['That is what I\'m talking about! Thanks friend, I hope we can make more deals next time.'],
         tryagain: ['Hmmm, this doesn\'t look so good. you can make a friend discount, right?'],
         empty: ['Look at you ... are you ready to make a real deal?'],
     }},
