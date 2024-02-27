@@ -35,19 +35,13 @@ export function playBgm() {
 }
 
 export function playSfx (sfx: HTMLAudioElement) {
-    const sfxPipe = context.createMediaElementSource(bgm);
-    sfxPipe.connect(context.destination);
-    sfx.addEventListener('complete', () => sfxPipe.disconnect);
     sfx.loop = false;
     sfx.play();
 }
 
 export function loopSfx (sfx: HTMLAudioElement) {
-    const sfxPipe = context.createMediaElementSource(bgm);
-    sfxPipe.connect(context.destination);
-    //sfx.addEventListener('complete', () => sfxPipe.disconnect);
     sfx.loop = true;
     sfx.play();
 
-    return () => { sfxPipe.disconnect(); sfx.pause(); sfx.currentTime = 0; }
+    return () => { sfx.pause(); sfx.currentTime = 0; }
 }
