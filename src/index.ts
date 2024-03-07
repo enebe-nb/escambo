@@ -19,7 +19,7 @@ PIXI.BaseTexture.defaultOptions.scaleMode = PIXI.SCALE_MODES.NEAREST;
 const app = new PIXI.Application();
 document.body.innerHTML = "";
 document.body.appendChild(app.view as any);
-app.view.addEventListener('wheel', (e) => e.preventDefault(), {passive: false});
+app.view.addEventListener?.('wheel', (e:Event) => e.preventDefault(), {passive: false});
 
 function onResize() {
     const size = fitSizeWithRatio(innerWidth, innerHeight, 240, 135);
